@@ -4926,7 +4926,7 @@ applyToFilesMatching and doNotApplyToFilesMatching.</p>
     <internalKey><![CDATA[MissingBlankLineAfterImports]]></internalKey>
     <description><![CDATA[<p>Makes sure there is a blank line after the imports of a source code file.</p>
 <p>Example of violation:</p>
-<pre><code>    import org.apache.commons.lang.StringUtils
+<pre><code>    import org.apache.commons.lang3.StringUtils
     class MyClass { }                       // violation
 </code></pre>
 <p>NOTE: This is a file-based rule, rather than an AST-based rule, so the <em>applyToClassNames</em> and

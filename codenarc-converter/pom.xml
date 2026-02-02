@@ -13,8 +13,8 @@
   <name>Sonar CodeNarc Converter</name>
 
   <properties>
-    <auto.version>1.10.1</auto.version>
-    <commonmark.version>0.21.0</commonmark.version>
+    <auto.version>1.11.1</auto.version>
+    <commonmark.version>0.27.1</commonmark.version>
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
@@ -46,7 +46,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.sonarsource.sonarqube</groupId>
+      <groupId>org.sonarsource.api.plugin</groupId>
       <artifactId>sonar-plugin-api</artifactId>
     </dependency>
     <dependency>
@@ -56,15 +56,15 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>31.1-jre</version>
+      <version>33.5.0-jre</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
     </dependency>
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
