@@ -24,7 +24,6 @@
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
       <version>4.9.8</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.sonarsource.api.plugin</groupId>
@@ -118,7 +117,7 @@
             <configuration>
               <rules>
                 <requireFilesSize>
-                  <maxsize>15000000</maxsize>
+                  <maxsize>20000000</maxsize>
                   <minsize>11000000</minsize>
                   <files>
                     <file>${project.build.directory}/${project.build.finalName}.jar</file>
