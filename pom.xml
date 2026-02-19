@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.sonarsource.parent</groupId>
     <artifactId>parent</artifactId>
-    <version>59.0.29</version>
+    <version>86.0.0.3040</version>
   </parent>
 
   <groupId>org.sonarsource.groovy</groupId>
@@ -75,8 +75,8 @@
   </distributionManagement>
 
   <properties>
-    <sonar.version>8.0</sonar.version>
     <orchestrator.version>3.11</orchestrator.version>
+    <version.jacoco.plugin>0.8.14</version.jacoco.plugin>
 
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.organization>tobix-github</sonar.organization>
@@ -85,14 +85,14 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.sonarsource.sonarqube</groupId>
+        <groupId>org.sonarsource.api.plugin</groupId>
         <artifactId>sonar-plugin-api</artifactId>
-        <version>${sonar.version}</version>
+        <version>13.4.3.4290</version>
       </dependency>
       <dependency>
         <groupId>org.sonarsource.sonarqube</groupId>
         <artifactId>sonar-plugin-api-impl</artifactId>
-        <version>${sonar.version}</version>
+        <version>26.1.0.118079</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -120,17 +120,17 @@
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.11.0</version>
+        <version>2.21.0</version>
       </dependency>
       <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-        <version>2.6</version>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.20.0</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>1.7.36</version>
+        <version>2.0.17</version>
       </dependency>
 
       <dependency>
@@ -142,7 +142,7 @@
       <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
-        <version>3.21.0</version>
+        <version>3.27.7</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
@@ -161,7 +161,7 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.29.0</version>
+        <version>3.2.1</version>
         <executions>
           <execution>
             <goals>
@@ -211,12 +211,12 @@
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
           <artifactId>sonar-maven-plugin</artifactId>
-          <version>3.9.1.2184</version>
+          <version>5.5.0.6356</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>2.5.3</version>
+          <version>3.3.1</version>
           <configuration>
             <autoVersionSubmodules>true</autoVersionSubmodules>
             <tagNameFormat>@{project.version}</tagNameFormat>
