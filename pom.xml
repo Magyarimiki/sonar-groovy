@@ -52,25 +52,25 @@
   </modules>
 
   <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false">
-    <connection>scm:git:git@github.com:Inform-Software/sonar-groovy.git</connection>
-    <developerConnection>scm:git:git@github.com:Inform-Software/sonar-groovy.git
+    <connection>scm:git:git@github.com:Magyarimiki/sonar-groovy.git</connection>
+    <developerConnection>scm:git:git@github.com:Magyarimiki/sonar-groovy.git
     </developerConnection>
-    <url>https://github.com/Inform-Software/sonar-groovy/tree/main</url>
+    <url>https://github.com/Magyarimiki/sonar-groovy/tree/main</url>
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/Inform-Software/sonar-groovy/issues</url>
+    <url>https://github.com/Magyarimiki/sonar-groovy/issues</url>
   </issueManagement>
   <ciManagement>
     <system>github-actions</system>
-    <url>https://github.com/Inform-Software/sonar-groovy/actions</url>
+    <url>https://github.com/Magyarimiki/sonar-groovy/actions</url>
   </ciManagement>
   <distributionManagement>
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/Inform-Software/sonar-groovy</url>
+      <url>https://maven.pkg.github.com/Magyarimiki/sonar-groovy</url>
     </repository>
   </distributionManagement>
 
