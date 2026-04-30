@@ -14,7 +14,7 @@ hiding the original exception, if there is one.</p>
         try {
             doSomething()
         } finally {
-            assert count &gt; 0        // violation
+            assert count > 0        // violation
         }
     }
 </code></pre>
@@ -115,16 +115,16 @@ best practice to extract a temp variable.</p>
     <internalKey><![CDATA[BrokenNullCheck]]></internalKey>
     <description><![CDATA[<p>Looks for faulty checks for <em>null</em> that can cause a <code>NullPointerException</code>.</p>
 <p>Examples:</p>
-<pre><code>    if (name != null || name.length &gt; 0) { }            // violation
+<pre><code>    if (name != null || name.length > 0) { }            // violation
     if (name != null || name.length) { }                // violation
-    while (record == null &amp;&amp; record.id &gt; 10) { }        // violation
+    while (record == null &amp;&amp; record.id > 10) { }        // violation
     if (record == null &amp;&amp; record.id &amp;&amp; doStuff()) { }   // violation
-    def isNotValid = record == null &amp;&amp; record.id &gt; 10   // violation
+    def isNotValid = record == null &amp;&amp; record.id > 10   // violation
     return record == null &amp;&amp; !record.id                 // violation
 
-    if (name != null || name.size() &gt; 0) { }            // violation
+    if (name != null || name.size() > 0) { }            // violation
     if (string == null &amp;&amp; string.equals(&quot;&quot;)) { }        // violation
-    def isValid = name != null || name.size() &lt; 0       // violation
+    def isValid = name != null || name.size() < 0       // violation
     return name != null || !name.size()                 // violation
 </code></pre>
 ]]></description>
@@ -190,11 +190,11 @@ compare two constants to each other or two literals that contain only constant v
 <p>Here are examples of code that produces a violation:</p>
 <pre><code>    23 == 67                    // violation
     Boolean.FALSE != false      // violation
-    23 &lt; 88                     // violation
-    0.17 &gt;= 0.99                // violation
-    &quot;abc&quot; &gt; &quot;ddd&quot;               // violation
-    [Boolean.FALSE] &gt;= [27]     // violation
-    [a:1] &lt;=&gt; [a:2]             // violation
+    23 < 88                     // violation
+    0.17 >= 0.99                // violation
+    &quot;abc&quot; > &quot;ddd&quot;               // violation
+    [Boolean.FALSE] >= [27]     // violation
+    [a:1] <=> [a:2]             // violation
 
     [1,2].equals([3,4])                                     // violation
     [a:123, b:true].equals(['a':222, b:Boolean.FALSE])      // violation
@@ -213,16 +213,16 @@ compare two constants to each other or two literals that contain only constant v
     <name><![CDATA[Comparison With Self]]></name>
     <internalKey><![CDATA[ComparisonWithSelf]]></internalKey>
     <description><![CDATA[<p>Checks for expressions where a <em>comparison operator</em> or <code>equals()</code> or <code>compareTo()</code> is used to compare a
-variable to itself, e.g.: <code>x == x, x != x, x &lt;=&gt; x, x &gt; x, x &gt;= x, x.equals(x) or x.compareTo(x)</code>, where
+variable to itself, e.g.: <code>x == x, x != x, x <=> x, x > x, x >= x, x.equals(x) or x.compareTo(x)</code>, where
 <code>x</code> is a variable.</p>
 <p>Here are examples of code that produces a violation:</p>
 <pre><code>    if (x == x) { }                 // violation
     if (x != x) { }                 // violation
-    while (x &gt; x) { }               // violation
-    if (x &gt;= x) { }                 // violation
-    while (x &gt; x) { }               // violation
-    if (x &lt;= x) { }                 // violation
-    def c = (x &lt;=&gt; x) { }           // violation
+    while (x > x) { }               // violation
+    if (x >= x) { }                 // violation
+    while (x > x) { }               // violation
+    if (x <= x) { }                 // violation
+    def c = (x <=> x) { }           // violation
     println isReady = x.equals(x)   // violation
     println x.compareTo(x)          // violation
 </code></pre>
@@ -502,7 +502,7 @@ matches this regex then no violations are produced.</p>
     <description><![CDATA[<p>Checks for empty <em>for</em> blocks. Empty <em>for</em> statements are confusing and serve no purpose.</p>
 <p>Here is an example of code that produces a violation:</p>
 <pre><code>    def myMethod() {
-        for (int i=0; i &lt; 23; i++) {
+        for (int i=0; i < 23; i++) {
             // empty
         }
     }
@@ -757,7 +757,7 @@ within an application, it should be dealt with JVM options rather than within th
     <description><![CDATA[<p>A <code>for</code> loop without an init and update statement can be simplified to a <code>while</code> loop.</p>
 <p>Example of violations:</p>
 <pre><code>    int i = 0;
-    for(; i &lt; 5;) {     // Violation
+    for(; i < 5;) {     // Violation
         println i++
     }
 
@@ -765,11 +765,11 @@ within an application, it should be dealt with JVM options rather than within th
     for(i in [1,2])         // OK
        println i
 
-    for(int i = 0; i&lt;5;)    // OK
+    for(int i = 0; i<5;)    // OK
         println i++
 
     int i = 0;
-    for(; i &lt; 5; i++)       // OK
+    for(; i < 5; i++)       // OK
         println i
 
     for (Plan p : plans) {  // OK
@@ -859,17 +859,17 @@ It is a poor piece of API to use; replace it with System.properties['prop'].</p>
     <severity>MINOR</severity>
     <name><![CDATA[Parameter Assignment In Filter Closure]]></name>
     <internalKey><![CDATA[ParameterAssignmentInFilterClosure]]></internalKey>
-    <description><![CDATA[<p>&lt;Since CodeNarc 2.1.0&gt;</p>
+    <description><![CDATA[<p><Since CodeNarc 2.1.0></p>
 <p>An assignment operator was used on a parameter, or a property or subproperty of the parameter, in a filtering or searching closure. This is usually a typo, and the comparison operator (==) was intended.</p>
 <p>This rule will check the following filter methods: <code>find</code>, <code>findAll</code>, <code>findIndexOf</code>, <code>every</code>, <code>any</code>, <code>filter</code>, <code>grep</code>, <code>dropWhile</code> and <code>takeWhile</code>.</p>
 <p>Example of violations:</p>
 <pre><code>    List someList = [1,2,3]
     someList.find {it == 2}
     someList.find {it = 2}                  // violation, this actually finds 1 instead.
-    someList.find { int integer -&gt;
+    someList.find { int integer ->
         integer == 2
     }
-    someList.find { int integer -&gt;
+    someList.find { int integer ->
         integer = 2                         // violation, this actually finds 1 instead.
     }
     someList.takeWhile { it.name = 42 }     // violation
@@ -1407,7 +1407,7 @@ property <code>applyToNonMainClasses</code> to true.</p>
 <pre><code>    /**
      * Return the calculated count of some stuff.
      *
-     * @param startIndex the starting index; must be &lt;= 0
+     * @param startIndex the starting index; must be <= 0
      * @return the full count
      * @exception RuntimeException                   // violation
      */
@@ -1467,7 +1467,7 @@ property <code>applyToNonMainClasses</code> to true.</p>
 <pre><code>    /**
      * Return the calculated count of some stuff.
      *
-     * @param startIndex the starting index; must be &lt;= 0
+     * @param startIndex the starting index; must be <= 0
      * @return the full count
      * @throws RuntimeException                   // violation
      */
@@ -1487,7 +1487,7 @@ property <code>applyToNonMainClasses</code> to true.</p>
     <severity>MAJOR</severity>
     <name><![CDATA[Space After Comment Delimiter]]></name>
     <internalKey><![CDATA[SpaceAfterCommentDelimiter]]></internalKey>
-    <description><![CDATA[<p>&lt;Since CodeNarc 3.3.0&gt;</p>
+    <description><![CDATA[<p><Since CodeNarc 3.3.0></p>
 <p>Checks that there is whitespace after comment delimiter (// and /*).</p>
 <p>Notes:</p>
 <ul>
@@ -1516,7 +1516,7 @@ property <code>applyToNonMainClasses</code> to true.</p>
     <severity>MAJOR</severity>
     <name><![CDATA[Space Before Comment Delimiter]]></name>
     <internalKey><![CDATA[SpaceBeforeCommentDelimiter]]></internalKey>
-    <description><![CDATA[<p>&lt;Since CodeNarc 3.3.0&gt;</p>
+    <description><![CDATA[<p><Since CodeNarc 3.3.0></p>
 <p>Checks that there is whitespace before comment characters (// and /*)</p>
 <p>Notes:</p>
 <ul>
@@ -1823,7 +1823,7 @@ serialization problems. Using an instance field or a <code>ThreadLocal</code> is
     // These usages are OK
     class MyCorrectClass {
         private final Calendar calendar1
-        static ThreadLocal&lt;Calendar&gt; calendar2
+        static ThreadLocal<Calendar> calendar2
     }
 </code></pre>
 ]]></description>
@@ -1887,7 +1887,7 @@ serialization problems. Using an instance field or a <code>ThreadLocal</code> is
     // These usages are OK
     class MyCorrectClass {
         private DateFormat calendar1
-        static ThreadLocal&lt;DateFormat&gt; calendar2
+        static ThreadLocal<DateFormat> calendar2
     }
 </code></pre>
 ]]></description>
@@ -1912,7 +1912,7 @@ instance across thread boundaries without proper synchronization will result in 
     // these usages are OK
     class MyCorrectClass {
       private Matcher matcher1
-      static ThreadLocal&lt;Matcher&gt; matcher2
+      static ThreadLocal<Matcher> matcher2
     }
 </code></pre>
 ]]></description>
@@ -1948,7 +1948,7 @@ serialization problems. Using an instance field or a <code>ThreadLocal</code> is
     // These usages are OK
     class MyCorrectClass {
         private SimpleDateFormat calendar1
-        static ThreadLocal&lt;SimpleDateFormat&gt; calendar2
+        static ThreadLocal<SimpleDateFormat> calendar2
     }
 </code></pre>
 ]]></description>
@@ -2817,7 +2817,7 @@ This check is disabled by setting <code>checkLastStatementImplicitElse</code> to
 Also checks if an explicit <code>it</code> parameter has been specified.</p>
 <p>Example of violations:</p>
 <pre><code>    def closureWithViolation = { it * 10 }
-    def closureWithViolationBecauseOfExplicitItParameter = { it -&gt; it * 10}
+    def closureWithViolationBecauseOfExplicitItParameter = { it -> it * 10}
 </code></pre>
 ]]></description>
     <tag>bug</tag>
@@ -2833,7 +2833,7 @@ Also checks if an explicit <code>it</code> parameter has been specified.</p>
     <severity>MAJOR</severity>
     <name><![CDATA[Implicit Return Statement]]></name>
     <internalKey><![CDATA[ImplicitReturnStatement]]></internalKey>
-    <description><![CDATA[<p>&lt;Since CodeNarc 1.6&gt;</p>
+    <description><![CDATA[<p><Since CodeNarc 1.6></p>
 <p>Checks for methods that are missing an explicit <code>return</code> statement.</p>
 <p>This rule skips <code>void</code> methods and <code>def</code> (dynamic return type) methods, as well as methods whose last statement is a:</p>
 <ul>
@@ -3099,7 +3099,7 @@ which is a confusing and questionable practice. Use a temporary variable instead
         b = 'new value'     // violation
     }
 
-    def myClosure1 = { int a, b -&gt;
+    def myClosure1 = { int a, b ->
         a = 123             // violation
     }
 </code></pre>
@@ -3601,7 +3601,7 @@ type. The corresponding interfaces should be used to specify the type instead.</
     }
 
     // Closure parameter
-    def closure = { PriorityQueue queue -&gt; ... }      // violation
+    def closure = { PriorityQueue queue -> ... }      // violation
 
     // Method return type
     GregorianCalendar calculateDate(int num) {        // violation
@@ -3680,24 +3680,24 @@ the same Java Virtual Machine.</em></p>
     <internalKey><![CDATA[NestedForLoop]]></internalKey>
     <description><![CDATA[<p>Reports classes with nested for loops.</p>
 <p>Example of violations:</p>
-<pre><code>for (int i = 0; i &lt; 100; ++i) {
-    for (int j = 0; j &lt; 100; ++j) { // violation
+<pre><code>for (int i = 0; i < 100; ++i) {
+    for (int j = 0; j < 100; ++j) { // violation
         println i + j
     }
 }
 
-for (int i = 0; i &lt; 100; ++i) {
-    for (int j = 0; j &lt; 100; ++j) { // violation
+for (int i = 0; i < 100; ++i) {
+    for (int j = 0; j < 100; ++j) { // violation
         println i + j
     }
-    for (int j = 0; j &lt; 100; ++j) { // violation
+    for (int j = 0; j < 100; ++j) { // violation
         println i + j
     }
 }
 
-for (int i = 0; i &lt; 100; ++i) {
-    for (int j = 0; j &lt; 100; ++j) { // violation
-        for (int k = 0; k &lt; 100; ++k) { // violation
+for (int i = 0; i < 100; ++i) {
+    for (int j = 0; j < 100; ++j) { // violation
+        for (int k = 0; k < 100; ++k) { // violation
             println i + j + k
         }
     }
@@ -3713,8 +3713,8 @@ for (int i = 0; i &lt; 100; ++i) {
     <severity>MINOR</severity>
     <name><![CDATA[Optional Collection Return Type]]></name>
     <internalKey><![CDATA[OptionalCollectionReturnType]]></internalKey>
-    <description><![CDATA[<p>Do not declare a method return type of <code>Optional&lt;List&gt;</code> (or <code>Collection</code>, <code>ArrayList</code>, <code>Set</code>, <code>Map</code>, <code>HashMap</code>, etc.). Return an empty collection instead.  See <a href="https://blogs.oracle.com/javamagazine/the-java-optional-class-11-more-recipes-for-preventing-null-pointer-exceptions">The Java Optional class: 11 more recipes for preventing null pointer exceptions</a>.</p>
-<p>This rule checks for <code>Optional&lt;collection-type&gt;</code> return types, where <em>collection-type</em> is one of these common collection interfaces or implementation classes:</p>
+    <description><![CDATA[<p>Do not declare a method return type of <code>Optional<List></code> (or <code>Collection</code>, <code>ArrayList</code>, <code>Set</code>, <code>Map</code>, <code>HashMap</code>, etc.). Return an empty collection instead.  See <a href="https://blogs.oracle.com/javamagazine/the-java-optional-class-11-more-recipes-for-preventing-null-pointer-exceptions">The Java Optional class: 11 more recipes for preventing null pointer exceptions</a>.</p>
+<p>This rule checks for <code>Optional<collection-type></code> return types, where <em>collection-type</em> is one of these common collection interfaces or implementation classes:</p>
 <ul>
 <li><code>Collection</code></li>
 <li><code>List</code> (and <code>ArrayList</code>, <code>LinkedList</code>)</li>
@@ -3725,16 +3725,16 @@ for (int i = 0; i &lt; 100; ++i) {
 </ul>
 <p>Example of violations:</p>
 <pre><code>    class MyClass {
-        Optional&lt;Collection&lt;Object&gt;&gt; getCollection() { }        // violation
+        Optional<Collection<Object>> getCollection() { }        // violation
 
-        private Optional&lt;List&gt; getList() { }                    // violation
-        Optional&lt;ArrayList&lt;String&gt;&gt; getArrayList() { }          // violation
+        private Optional<List> getList() { }                    // violation
+        Optional<ArrayList<String>> getArrayList() { }          // violation
         
-        protected Optional&lt;Set&lt;BigDecimal&gt;&gt; getSet() { }        // violation
-        Optional&lt;HashSet&lt;Boolean&gt;&gt; getHashSet() { }             // violation
+        protected Optional<Set<BigDecimal>> getSet() { }        // violation
+        Optional<HashSet<Boolean>> getHashSet() { }             // violation
 
-        Optional&lt;Map&lt;Integer, String&gt;&gt; getMap() { }             // violation
-        Optional&lt;TreeMap&lt;String, String&gt;&gt; getTreeMap() { }      // violation
+        Optional<Map<Integer, String>> getMap() { }             // violation
+        Optional<TreeMap<String, String>> getTreeMap() { }      // violation
     }
 </code></pre>
 ]]></description>
@@ -3750,10 +3750,10 @@ for (int i = 0; i &lt; 100; ++i) {
     <description><![CDATA[<p>Do not use an <code>Optional</code> as a field type. See <a href="https://blogs.oracle.com/javamagazine/the-java-optional-class-11-more-recipes-for-preventing-null-pointer-exceptions">The Java Optional class: 11 more recipes for preventing null pointer exceptions</a>.</p>
 <p>Example of violations:</p>
 <pre><code>    class MyClass {
-        Optional&lt;Integer&gt; count;                            // violation
+        Optional<Integer> count;                            // violation
         public String name;
-        public Optional&lt;String&gt; alias = Optional.of(&quot;x&quot;)    // violation
-        protected static Optional&lt;Object&gt; lock              // violation
+        public Optional<String> alias = Optional.of(&quot;x&quot;)    // violation
+        protected static Optional<Object> lock              // violation
     }
 </code></pre>
 ]]></description>
@@ -3769,13 +3769,13 @@ for (int i = 0; i &lt; 100; ++i) {
     <description><![CDATA[<p>Do not use an <code>Optional</code> as a parameter type for a method or constructor. See <a href="https://blogs.oracle.com/javamagazine/the-java-optional-class-11-more-recipes-for-preventing-null-pointer-exceptions">The Java Optional class: 11 more recipes for preventing null pointer exceptions</a>.</p>
 <p>Example of violations:</p>
 <pre><code>    class MyClass {
-        protected MyClass(Optional&lt;Integer&gt; count) { }                  // violation
-        MyClass(Optional&lt;String&gt; name, Optional&lt;Integer&gt; sum) { }       // 2 violations
+        protected MyClass(Optional<Integer> count) { }                  // violation
+        MyClass(Optional<String> name, Optional<Integer> sum) { }       // 2 violations
         private MyClass(Optional something) { }                         // violation
 
-        void doStuff(Optional&lt;Integer&gt; count) { }                       // violation
+        void doStuff(Optional<Integer> count) { }                       // violation
         public String getName() { return 'abc' }
-        int count(Optional&lt;String&gt; alias, Optional&lt;Integer&gt; total) { }  // 2 violations
+        int count(Optional<String> alias, Optional<Integer> total) { }  // 2 violations
         private doSomething(Optional something) { }                     // violation
     }
 </code></pre>
@@ -4519,13 +4519,13 @@ specific exception subclass instead.</p>
                                 // violation
     }
 
-    for (i = 0; i &lt; 3; i++) {
+    for (i = 0; i < 3; i++) {
         println i
                                 // violation
     }
 
     int j = 0
-    while (j &lt; 3) {
+    while (j < 3) {
       println j++
                                 // violation
     }
@@ -4559,7 +4559,7 @@ specific exception subclass instead.</p>
 
     def list = [
         123,
-        { id -&gt;
+        { id ->
                                 // Known limitation: should be a violation, but is not
         }
     ]
@@ -4591,13 +4591,13 @@ specific exception subclass instead.</p>
         println value
     }
 
-    for (i = 0; i &lt; 3; i++) {
+    for (i = 0; i < 3; i++) {
                                 // violation
         println i
     }
 
     int j = 0
-    while (j &lt; 3) {
+    while (j < 3) {
                                 // violation
       println j++
     }
@@ -4756,7 +4756,7 @@ the closing class brace, except:</p>
             }
 </code></pre>
 <p>If <em>ignoreSingleLineClasses</em> is <code>false</code> and <em>blankLineRequired</em> is <code>true</code></p>
-<pre><code>            class Foo extends Bar&lt;String&gt; { }
+<pre><code>            class Foo extends Bar<String> { }
 </code></pre>
 <p>If <em>ignoreSingleLineClasses</em> is <code>true</code> and <em>blankLineRequired</em> is <code>false</code></p>
 <pre><code>            class Foo {
@@ -4826,7 +4826,7 @@ the opening class brace, except:</p>
             }
 </code></pre>
 <p>If <em>ignoreSingleLineClasses</em> is <code>false</code> and <em>blankLineRequired</em> is <code>true</code></p>
-<pre><code>            class Foo extends Bar&lt;String&gt; { }
+<pre><code>            class Foo extends Bar<String> { }
 </code></pre>
 <p>If <em>ignoreSingleLineClasses</em> is <code>true</code> and <em>blankLineRequired</em> is <code>false</code></p>
 <pre><code>            class Foo {
@@ -4872,11 +4872,11 @@ the opening class brace, except:</p>
     <severity>MAJOR</severity>
     <name><![CDATA[Closure Statement On Opening Line Of Multiple Line Closure]]></name>
     <internalKey><![CDATA[ClosureStatementOnOpeningLineOfMultipleLineClosure]]></internalKey>
-    <description><![CDATA[<p>Checks for closure logic on first line (after -&gt;) for a multi-line closure. That breaks the symmetry
+    <description><![CDATA[<p>Checks for closure logic on first line (after ->) for a multi-line closure. That breaks the symmetry
 of indentation (if the subsequent statements are indented normally), and that first statement can be easily
 missed when reading the code.</p>
 <p>Example of violations:</p>
-<pre><code>    def closure = { name -&gt; println name
+<pre><code>    def closure = { name -> println name
         addToCounts()
         println “done” }
 </code></pre>
@@ -5173,7 +5173,7 @@ and closure declaration parameter lists, method call parameter lists, Map litera
 
     def method1(int a,String b) { }             // violation on parameter b
 
-    def closure1 = { int a,String b -&gt; }        // violation on parameter b
+    def closure1 = { int a,String b -> }        // violation on parameter b
 
     def list1 = [a,b, c]                        // violation on list element b
 
@@ -5205,11 +5205,11 @@ null-safe operator (?.) does not cause a violation.</p>
     def matching = list.find { it.isReady() }.filter()  // no violation for dot operator
     assert list.every { it.isReady() }, &quot;Error&quot;         // no violation for comma
     def m = [a:123, b:{ println 7 },c:99]               // no violation for comma
-    closures.find { c -&gt; c }()                          // no violation for opening parenthesis
+    closures.find { c -> c }()                          // no violation for opening parenthesis
     processItems(list.select { it.isReady() })          // no violation for closing parenthesis
-    maps.find { m -&gt; m[index] }[index]                  // no violation for opening square bracket
+    maps.find { m -> m[index] }[index]                  // no violation for opening square bracket
     processItems([{ named(&quot;a&quot;) }, { named(&quot;b&quot;)}])       // no violation for closing square bracket
-    def names = records.findAll { it.age &gt; 1 }*.name    // no violation for spread operator
+    def names = records.findAll { it.age > 1 }*.name    // no violation for spread operator
     list?.collect { it?.type }?.join(',')               // no violation for null-safe operator
 </code></pre>
 ]]></description>
@@ -5230,7 +5230,7 @@ null-safe operator (?.) does not cause a violation.</p>
     <description><![CDATA[<p>Check that there is exactly one space (blank) after the <code>for</code> keyword and before the opening parenthesis.</p>
 <p>Examples of violations:</p>
 <pre><code>    for(name in names) { }                  // violation
-    for  (int i=0; i &lt; 10; i++) { }         // violation
+    for  (int i=0; i < 10; i++) { }         // violation
 </code></pre>
 ]]></description>
     <tag>convention</tag>
@@ -5289,7 +5289,7 @@ method/class/interface declarations, closure expressions and block statements.</
     if (ready) {
     } else {println 99}                         // violation
 
-    for (int i=0; i&lt;10; i++) {println i }       // violation
+    for (int i=0; i<10; i++) {println i }       // violation
 
     for (String name in names) {println name }  // violation
 
@@ -5301,7 +5301,7 @@ method/class/interface declarations, closure expressions and block statements.</
     } catch(Exception e) {x=77 }                // violation
     } finally {println 'error' }                // violation
 
-    list.each {name -&gt; }                        // violation
+    list.each {name -> }                        // violation
 
     shouldFail(Exception) {doStuff() }          // violation
 </code></pre>
@@ -5328,15 +5328,15 @@ method/class/interface declarations, closure expressions and block statements.</
     <description><![CDATA[<p>Check that there is at least one space (blank) or whitespace following a semicolon that separates:</p>
 <ul>
 <li>multiple statements on a single line</li>
-<li>the clauses within a classic for loop, e.g. for (i=0;i&lt;10;i++)</li>
+<li>the clauses within a classic for loop, e.g. for (i=0;i<10;i++)</li>
 </ul>
 <p>Examples of violations:</p>
 <pre><code>    def myMethod() {
         println 1;println 2                         // violation
-        def closure = { x -&gt; doStuff();x = 23; }    // violation
+        def closure = { x -> doStuff();x = 23; }    // violation
 
-        for (int i=0;i &lt; 10;i++) {                  // violations (2)
-            for (int j=0; j &lt; 10;j++) { }           // violation
+        for (int i=0;i < 10;i++) {                  // violations (2)
+            for (int j=0; j < 10;j++) { }           // violation
         }
     }
 </code></pre>
@@ -5384,17 +5384,17 @@ method/class/interface declarations, closure expressions and block statements.</
     <severity>MAJOR</severity>
     <name><![CDATA[Space Around Closure Arrow]]></name>
     <internalKey><![CDATA[SpaceAroundClosureArrow]]></internalKey>
-    <description><![CDATA[<p>Checks that there is at least one space (blank) or whitespace around each closure arrow (-&gt;) symbol.</p>
+    <description><![CDATA[<p>Checks that there is at least one space (blank) or whitespace around each closure arrow (->) symbol.</p>
 <p>Known limitations:</p>
 <ul>
-<li>Does not catch violations if the closure arrow (-&gt;) is on a separate line from the start of the closure.</li>
+<li>Does not catch violations if the closure arrow (->) is on a separate line from the start of the closure.</li>
 </ul>
 <p>Example of violations:</p>
-<pre><code>    def closure1 = {-&gt;}                             // violation
-    def closure2 = { -&gt;}                            // violation
-    def closure3 = {-&gt; }                            // violation
-    def closure4 = { count-&gt; println 123 }          // violation
-    def closure5 = { count, name -&gt;println 123 }    // violation
+<pre><code>    def closure1 = {->}                             // violation
+    def closure2 = { ->}                            // violation
+    def closure3 = {-> }                            // violation
+    def closure4 = { count-> println 123 }          // violation
+    def closure5 = { count, name ->println 123 }    // violation
 </code></pre>
 ]]></description>
     <tag>convention</tag>
@@ -5439,7 +5439,7 @@ properties below.</p>
 <ul>
 <li>Arithmetic operators: +, -, *, /, **</li>
 <li>Assignment operators: =, +=, -=, *=, /=, **=, ?=</li>
-<li>Relational operators: ==, !=, &gt;, &gt;=, &lt;, &lt;=, ===, !==</li>
+<li>Relational operators: ==, !=, >, >=, <, <=, ===, !==</li>
 <li>Logical operators: &amp;&amp;, ||</li>
 <li>Bitwise operators: &amp;, |</li>
 <li>Other: ?:, &quot;as&quot;</li>
@@ -5454,8 +5454,8 @@ Do not check array ('[') operator.</p>
 <p>Examples of violations:</p>
 <pre><code>    def myMethod() {
         3+ 5-x*23/ 100              // violation
-        list &lt;&lt;123                // violation
-        other&lt;&lt; writer            // violation
+        list <<123                // violation
+        other<< writer            // violation
         x=99                        // violation
         x&amp;&amp; y                       // violation
         x ||y                       // violation
@@ -5499,7 +5499,7 @@ method/class/interface declarations, closure expressions and block statements.</
     if (ready) {
     } else { return 9}                          // violation
 
-    for (int i=0; i&lt;10; i++) { println i}       // violation
+    for (int i=0; i<10; i++) { println i}       // violation
 
     for (String name in names) { println name}  // violation
 
@@ -5511,7 +5511,7 @@ method/class/interface declarations, closure expressions and block statements.</
     catch(Exception e) { logError(e)}           // violation
     finally { cleanUp()}                        // violation
 
-    list.each { name -&gt; println name}           // violation
+    list.each { name -> println name}           // violation
 
     shouldFail(Exception) { doStuff()}          // violation
 </code></pre>
@@ -5558,7 +5558,7 @@ brace ([), or a dollar sign ($) within a GString does not cause a violation.</p>
     if (ready) {
     } else{}                                    // violation
 
-    for (int i=0; i&lt;10; i++){ }                 // violation
+    for (int i=0; i<10; i++){ }                 // violation
 
     for (String name in names){ }               // violation
 
@@ -5575,7 +5575,7 @@ brace ([), or a dollar sign ($) within a GString does not cause a violation.</p>
     try {
     } finally{ }                                // violation
 
-    list.each{ name -&gt; }                        // violation
+    list.each{ name -> }                        // violation
 
     shouldFail(Exception){ doStuff() }          // violation
 </code></pre>
@@ -5598,7 +5598,7 @@ brace ([), or a dollar sign ($) within a GString does not cause a violation.</p>
 <p>Example of violations:</p>
 <pre><code>    if( running) { }                        // violation
     if(running ) { }                        // violation
-    if(      x &lt; calculateLastIndex(        // violation
+    if(      x < calculateLastIndex(        // violation
             'name') + 1    ) { }            // violation
             
     for(    String name: filterNames(       // violation
@@ -5976,7 +5976,7 @@ field whose value is itself mutable, e.g. a <code>final HashMap</code>.</p>
     <severity>MAJOR</severity>
     <name><![CDATA[Grails Domain Gorm Methods]]></name>
     <internalKey><![CDATA[GrailsDomainGormMethods]]></internalKey>
-    <description><![CDATA[<p>&lt;Since CodeNarc 1.6&gt;</p>
+    <description><![CDATA[<p><Since CodeNarc 1.6></p>
 <p>Database operation should be performed by Data Services instead of calling GORM static and instance methods.</p>
 <p>Using the GORM static and instance methods may lead to spreading the persistence logic across the whole
 application instead of concentrating it into services. It makes difficult to find all the code working
@@ -6340,7 +6340,7 @@ as the first method call in a series of chained method calls.</p>
 <p>Example of violations:</p>
 <pre><code>  def a = myList.sort()
   def b = myList.sort() { it }
-  def c = myList.sort().findAll { x &gt; 1 }
+  def c = myList.sort().findAll { x > 1 }
 </code></pre>
 ]]></description>
     <tag>groovyism</tag>
@@ -6362,9 +6362,9 @@ or when it appears as the first method call in a series of chained method calls.
   def x = myList.unique() { it }            // Single-argument: Closure
   def y = myList.unique { it % 2 }
 
-  def c = myList.unique().findAll { x &gt; 1 } // Chained method call
+  def c = myList.unique().findAll { x > 1 } // Chained method call
 
-  def comparator = { o1, o2 -&gt; o1 &lt;=&gt; o2 }
+  def comparator = { o1, o2 -> o1 <=> o2 }
   def x = myList.unique(comparator)         // Single-argument: Comparator
 
   def x = myList.unique(true)               // Single-argument: boolean true
@@ -6475,14 +6475,14 @@ criteria.</p>
     <name><![CDATA[Explicit Call To Compare To Method]]></name>
     <internalKey><![CDATA[ExplicitCallToCompareToMethod]]></internalKey>
     <description><![CDATA[<p>This rule detects when the <code>compareTo(Object)</code> method is called directly in code instead of using the
-&lt;=&gt;, &lt;, &lt;=, &gt;, and &gt;= operators. A groovier way to express this: <code>a.compareTo(b)</code> is this:
-<code>a &lt;=&gt; b</code>, or using the other operators. Here are some other ways to write groovier code:</p>
+<=>, <, <=, >, and >= operators. A groovier way to express this: <code>a.compareTo(b)</code> is this:
+<code>a <=> b</code>, or using the other operators. Here are some other ways to write groovier code:</p>
 <pre><code>    a.compareTo(b) == 0               // can be replaced by: a == b
-    a.compareTo(b)                    // can be replaced by: a &lt;=&gt; b
-    a.compareTo(b) &lt; 0                // can be replaced by: a &lt; b
-    a.compareTo(b) &lt;= 0               // can be replaced by: a &lt;= b
-    a.compareTo(b) &gt; 0                // can be replaced by: a &gt; b
-    a.compareTo(b) &gt;= 0               // can be replaced by: a &gt;= b
+    a.compareTo(b)                    // can be replaced by: a <=> b
+    a.compareTo(b) < 0                // can be replaced by: a < b
+    a.compareTo(b) <= 0               // can be replaced by: a <= b
+    a.compareTo(b) > 0                // can be replaced by: a > b
+    a.compareTo(b) >= 0               // can be replaced by: a >= b
 </code></pre>
 <p>This rule can be  configured to ignore <code>this.compareTo(Object)</code> using the <em>ignoreThisReference</em>
 property. It defaults to <code>false</code>, so even <code>compareTo(x)</code> will trigger a violation.</p>
@@ -6544,7 +6544,7 @@ so even <code>getAt(x)</code> will trigger a violation.</p>
     <name><![CDATA[Explicit Call To Left Shift Method]]></name>
     <internalKey><![CDATA[ExplicitCallToLeftShiftMethod]]></internalKey>
     <description><![CDATA[<p>This rule detects when the <code>leftShift(Object)</code> method is called directly in code instead of using the
-&lt;&lt; operator. A groovier way to express this: <code>a.leftShift(b)</code> is this: <code>a &lt;&lt; b</code>. This rule can be
+<< operator. A groovier way to express this: <code>a.leftShift(b)</code> is this: <code>a << b</code>. This rule can be
 configured to ignore <code>this.leftShift(Object)</code> using the <em>ignoreThisReference</em> property. It defaults to
 <em>false</em>, so even <code>leftShift(x)</code> will trigger a violation.</p>
 <p>This rule also ignores all calls to <code>super.leftShift(Object)</code>.</p>
@@ -6668,7 +6668,7 @@ to <em>false</em>, so even <code>putAt(k, v)</code> will trigger a violation.</p
     <description><![CDATA[<p>This rule detects when the <code>rightShift(Object)</code> method is called directly in code instead of using the</p>
 <blockquote>
 <blockquote>
-<p>operator. A groovier way to express this: <code>a.rightShift(b)</code> is this: <code>a &gt;&gt; b</code>. This rule can be
+<p>operator. A groovier way to express this: <code>a.rightShift(b)</code> is this: <code>a >> b</code>. This rule can be
 configured to ignore <code>this.rightShift(Object)</code> using the <em>ignoreThisReference</em> property. It defaults to
 <em>false</em>, so even <code>rightShift(x)</code> will trigger a violation.</p>
 </blockquote>
@@ -6938,7 +6938,7 @@ l.collectMany{ [it, it*2] }       // same functionality, better readability
 <p>Example of violations:</p>
 <pre><code>def list = [1, 2, [3, 4, 5, 6], [7]]
 
-println list.collect { elem -&gt;
+println list.collect { elem ->
     if (elem instanceof List)
         elem.collect {it *2} // violation
     else elem * 2
@@ -7189,9 +7189,9 @@ Typically they can be replaced by variable interpolation.
 Closures that are used as argument to method calls on the other hand are fine.
 See also the Jenkins docs about <a href="https://www.jenkins.io/doc/book/pipeline/cps-method-mismatches/#PipelineCPSmethodmismatches-ClosuresinsideGString">Closures inside GString</a>.</p>
 <p>Examples:</p>
-<pre><code>def s1 = &quot;some string ${-&gt; x}&quot; // Violation
+<pre><code>def s1 = &quot;some string ${-> x}&quot; // Violation
 def s2 = &quot;some string ${x}&quot; // OK
-def s3 = &quot;some string ${ [1,2,3].collect { i -&gt; i * i }.toString() }&quot; // OK
+def s3 = &quot;some string ${ [1,2,3].collect { i -> i * i }.toString() }&quot; // OK
 </code></pre>
 ]]></description>
     <tag>bug</tag>
@@ -7265,7 +7265,7 @@ class SerializableClass implements Serializable {}
 
 SomeClass some = new SomeClass() // Violation
 SerializableClass ser = new SerializableClass() // OK 
-Map map = new HashMap&lt;String, String&gt;() //OK
+Map map = new HashMap<String, String>() //OK
 </code></pre>
 ]]></description>
     <tag>bug</tag>
@@ -7282,10 +7282,10 @@ See also the Jenkins docs on <a href="https://www.jenkins.io/doc/book/pipeline/c
 <p>Examples:</p>
 <pre><code>void cpsMethod() {
     List l = [4,1,3]
-    l.sort { a, b -&gt; a &gt; b } // Violation
-    l.toSorted { a, b -&gt; a &gt; b } // Violation
-    &quot;hello&quot;.eachLine { l, n -&gt; println(l) } // Violation
-    &quot;hello&quot;.eachLine(2) { l, n -&gt; println(l) } // Violation
+    l.sort { a, b -> a > b } // Violation
+    l.toSorted { a, b -> a > b } // Violation
+    &quot;hello&quot;.eachLine { l, n -> println(l) } // Violation
+    &quot;hello&quot;.eachLine(2) { l, n -> println(l) } // Violation
 }
 </code></pre>
 ]]></description>
@@ -8844,7 +8844,7 @@ declarations: = *= /= %= += **= **= &amp;= |= ^= `=</li>
 (prefix or postfix): ++ --</li>
 <li>Add one to the <em>branch</em> count for each function call or class method call.</li>
 <li>Add one to the <em>branch</em> count for each occurrence of the new operator.</li>
-<li>Add one to the <em>condition</em> count for each use of a conditional operator: == != &lt;= &gt;= &lt; &gt; &lt;=&gt; =~ ==~</li>
+<li>Add one to the <em>condition</em> count for each use of a conditional operator: == != <= >= < > <=> =~ ==~</li>
 <li>Add one to the <em>condition</em> count for each use of the following keywords: else case default try catch ?</li>
 <li>Add one to the <em>condition</em> count for each unary conditional expression.</li>
 </ul>
@@ -9385,7 +9385,7 @@ condition frequently occurs when catching an exception for debugging purposes bu
 <code>list.collect { it.multiply(2) }</code> can be replaced by <code>list*.multiply(2)</code>.</p>
 <p>Examples of violations include:</p>
 <pre><code>    assert [1, 2, 3].collect { it.multiply(2) }
-    assert [1, 2, 3].collect { x -&gt; x.multiply(2) }
+    assert [1, 2, 3].collect { x -> x.multiply(2) }
     [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;].collect { it.bytes }
 </code></pre>
 <p>The following code does not produce violations:</p>
@@ -9399,7 +9399,7 @@ condition frequently occurs when catching an exception for debugging purposes bu
     [1, 2, 3].collect { println it; it.multiply(5) }
 
     // OK, closure has too many arguments
-    [1, 2, 3].collect { a, b -&gt; a.multiply(b) }
+    [1, 2, 3].collect { a, b -> a.multiply(b) }
 
     // OK, closure statement references parameter multiple times
     [1, 2, 3].collect { it.multiply(it) }
@@ -10041,7 +10041,7 @@ pointless and can be removed.</p>
     void init(String name, groovy.lang.Binding binding) { }     // violation
 
     // Closure parameter types
-    def writeCount = { java.io.Writer writer, int count -&gt; }    // violation
+    def writeCount = { java.io.Writer writer, int count -> }    // violation
 
     // Extends and implements
     class MyHashMap extends java.util.HashMap { }               // violation
@@ -10069,7 +10069,7 @@ pointless and can be removed.</p>
 </li>
 <li>
 <p>Does not catch unnecessary package references if they are the types of anonymous inner class
-definitions, for older versions of Groovy (&lt; 1.7.10?). For instance,
+definitions, for older versions of Groovy (< 1.7.10?). For instance,
 <code>def runnable = new java.lang.Runnable() { ... }</code>.</p>
 </li>
 </ul>
@@ -10271,8 +10271,8 @@ These cases can be replaced by a simple boolean expression. Examples of violatio
 <pre><code>    x==99 ? true : false                    // can be replaced by: x==99
     x &amp;&amp; y ? true : false                   // can be replaced by: x &amp;&amp; y
     x||y ? false : true                     // can be replaced by: !(x||y)
-    x &lt;= 1 ? true: false                    // can be replaced by: x &lt;= 1
-    x &lt; 99 ? Boolean.TRUE : Boolean.FALSE   // can be replaced by: x &lt; 99
+    x <= 1 ? true: false                    // can be replaced by: x <= 1
+    x < 99 ? Boolean.TRUE : Boolean.FALSE   // can be replaced by: x < 99
     !x ? true : false                       // can be replaced by: !x
 </code></pre>
 <p>The rule also checks for ternary expressions where the <em>true</em> and <em>false</em> expressions are
