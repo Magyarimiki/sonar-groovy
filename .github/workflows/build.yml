@@ -8,15 +8,12 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [8, 11]
+        java: [17]
         sonar:
           - ""
           - "8.9.0.43852"
         include:
-          - java: 8
-            sonar: ""
-            archive: "yes"
-          - java: 11
+          - java: 17
             sonar: "9.0.0.45539"
 
     runs-on: ubuntu-latest
